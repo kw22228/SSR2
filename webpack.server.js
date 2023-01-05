@@ -15,7 +15,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].js',
-        chunkFilename: '[name].js',
+        // chunkFilename: '[name].js',
     },
 
     module: {
@@ -23,13 +23,6 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 use: [
-                    // {
-                    //     loader: 'esbuild-loader',
-                    //     options: {
-                    //         loader: 'tsx',
-                    //         target: 'esnext',
-                    //     },
-                    // },
                     'babel-loader',
                     {
                         loader: 'ts-loader',
