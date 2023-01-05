@@ -1,46 +1,45 @@
-import path from "path";
-import React from "react";
-import express from "express";
-import { renderToString } from "react-dom/server";
-import { StaticRouter } from "react-router-dom/server";
-import Helmet from "react-helmet";
+import path from 'path';
+import React from 'react';
+import express from 'express';
+import { renderToString } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom/server';
+import Helmet from 'react-helmet';
 
-import App from "./App";
+import App from './App';
 
 const app = express();
 
-if (process.env.NODE_ENV !== "production") {
-  const webpack = require("webpack");
-  const webpackConfig = require("../webpack.client.js");
+if (process.env.NODE_ENV !== 'production') {
+    const webpack = require('webpack');
+    const webpackConfig = require('../webpack.client.js');
 
-  const webpackDevMiddleware = require("webpack-dev-middleware");
-  const webpackHotMiddleware = require("webpack-hot-middleware");
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+    const webpackHotMiddleware = require('webpack-hot-middleware');
 
-  const compiler = webpack(webpackConfig);
+    const compiler = webpack(webpackConfig);
 
-  app.use(
-    webpackDevMiddleware(compiler, {
-      //   logLevel: "silent",
-      publicPath: webpackConfig.output.publicPath,
-    })
-  );
+    app.use(
+        webpackDevMiddleware(compiler, {
+            //   logLevel: "silent",
+            publicPath: webpackConfig.output.publicPath,
+        })
+    );
 
-  app.use(webpackHotMiddleware(compiler));
+    app.use(webpackHotMiddleware(compiler));
 }
 
 app.use(express.static(path.resolve(__dirname)));
 
-app.get("*", (req, res) => {
-  const html = renderToString(
-    <StaticRouter location={req.url}>
-      <App />
-    </StaticRouter>
-  );
+app.get('*', (req, res) => {
+    const html = renderToString(
+        <StaticRouter location={req.url}>
+            <App />
+        </StaticRouter>
+    );
+    const helmet = Helmet.renderStatic();
 
-  const helmet = Helmet.renderStatic();
-
-  res.set("content-type", "text/html");
-  res.send(/* html */ `
+    res.set('content-type', 'text/html');
+    res.send(/* html */ `
   <!DOCTYPE html>
   <html lang="en">
     <head>
@@ -56,4 +55,4 @@ app.get("*", (req, res) => {
   `);
 });
 
-app.listen(3003, () => console.log("Server started http://localhost:3003"));
+app.listen(3003, () => console.log('Server started http://localhost:3003'));
